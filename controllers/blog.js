@@ -1,10 +1,9 @@
 import { asyncHandler } from "../utils/asyncHandler.js"
-import { ApiError } from "../ApiError.js";
 import { Blog } from "../models/blog.js";
 import { uploadOnCloudinary } from "../fileUploder/cloudinary.js";
-import { ApiResponse } from "../ApiResponse.js";
+import ErrorHandler from "../middleware/error.js";
 
-export const addblog = asyncHandler(async (req, res) => {
+export const addblog = asyncHandler(async (req, res, next) => {
     //title 
     //description
     // validation - not empty
@@ -15,24 +14,28 @@ export const addblog = asyncHandler(async (req, res) => {
     //return res
 
     const { title, description } = req.body;
-    // console.log("title", title);
     if (title === "") {
-        throw new ApiError(400, "tile is required")
+        return next(new ErrorHandler("tile is required", 400));
+
     }
     if (description === "") {
-        throw new ApiError(400, "description is required")
+        return next(new ErrorHandler("description is required", 400));
+
     }
     const avatarLocalPath = req.files?.avatar[0]?.path;
     const coverImageLocalPath = req.files?.coverImage[0]?.path;
 
     if (!avatarLocalPath) {
-        throw new ApiError(400, "Avatar file is required")
+        // throw new ApiError(400, "Avatar file is required")
+        return next(new ErrorHandler("Avatar file is required", 400));
+
     }
     const avatar = await uploadOnCloudinary(avatarLocalPath)
     const coverImage = await uploadOnCloudinary(coverImageLocalPath)
 
     if (!avatar || !coverImage) {
-        throw new ApiError(400, "Error uploading files to Cloudinary");
+        return next(new ErrorHandler("Error uploading files to Cloudinary", 400));
+
     }
     const blog = await Blog.create({
         title,
@@ -43,7 +46,8 @@ export const addblog = asyncHandler(async (req, res) => {
 
     })
     const createdBlog = await blog.save();
-    return res.status(201).json(new ApiResponse(200, createdBlog, "Blog added successfully"));
+    return res.status(201).json(new ErrorHandler(200, createdBlog, "Blog added successfully"));
+
 })
 
 export const getMyAllPost = asyncHandler(async (req, res) => {
@@ -54,6 +58,7 @@ export const getMyAllPost = asyncHandler(async (req, res) => {
         success: true,
         posts,
     });
+    
 })
 
 export const deleteblog = asyncHandler(async (req, res) => {
@@ -61,10 +66,8 @@ export const deleteblog = asyncHandler(async (req, res) => {
     if (!blog) return next(new ErrorHandler("Invaild Id", 404));
     await blog.deleteOne();
 
-    res.status(200).json({
-        success: true,
-        message: 'Task Deleted Successfully'
 
-    });
+    return res.status(201).json(new ErrorHandler(200, createdBlog, "Task Deleted Successfully"));
+
 
 })
