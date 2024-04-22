@@ -23,7 +23,7 @@ app.use(
 app.use(express.urlencoded({ extended: true, limit: "16kb" }))
 app.use(express.static("public"))
 
-                    //Import Router
+//Import Router
 import blogRouter from "./routes/blog.js"
 import userRouter from "./routes/user.js"
 import { errorMiddleware } from "./middleware/error.js";
@@ -35,6 +35,10 @@ app.use('/blogs', blogRouter);
 
 app.use(errorMiddleware);//Error Handler used
 
+
+app.get("/", (req, res) => {
+    res.send("Nice working");
+});
 
 app.listen(process.env.PORT, () => {
     // console.log(`Server is Working ${process.env.PORT}`);
