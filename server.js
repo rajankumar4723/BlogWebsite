@@ -29,8 +29,8 @@ import userRouter from "./routes/user.js"
 import { errorMiddleware } from "./middleware/error.js";
 
 
-app.use('/users', userRouter);
-app.use('/blogs', blogRouter);
+app.use('/api/v1/users', userRouter);
+app.use('/api/v1/blogs', blogRouter);
 
 
 app.use(errorMiddleware);//Error Handler used
