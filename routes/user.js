@@ -4,7 +4,7 @@ import { login, logout, register } from "../controllers/user.js";
 const router = Router();
 router.post('/add', register);
 
-router.get("/login",login);
+router.post("/login",login);
 
 router.get("/logout",logout);
 
