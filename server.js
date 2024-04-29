@@ -35,7 +35,7 @@ app.use('/api/v1/blogs', blogRouter);
 
 app.use(errorMiddleware);//Error Handler used
 
-
+    
 app.get("/", (req, res) => {
     res.send("Nice working");
 });

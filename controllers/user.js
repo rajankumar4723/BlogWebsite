@@ -35,6 +35,13 @@ export const login = async (req, res, next) => {
     sendCookie(user, res, `Welcome back ${user.name}`, 200);
 }
 
+export const getMyProfile = (req, res) => {
+    res.status(200).json({
+      success: true,
+      user: req.user,
+    });
+  };
+
 export const logout = (req, res) => {
     res.status(200);
     res.cookie("token", "", {

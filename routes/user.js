@@ -1,8 +1,12 @@
 import { Router } from "express";
-import { login, logout, register } from "../controllers/user.js";
+import { getMyProfile, login, logout, register } from "../controllers/user.js";
+import { isAuthenticated } from "../middleware/auth.js";
 
 const router = Router();
 router.post('/add', register);
+
+router.get("/getmy",isAuthenticated,getMyProfile);
+
 
 router.post("/login",login);
 
