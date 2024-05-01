@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import User from "../models/user.js";
+import User from "../Models/user.js";
 import { sendCookie } from "../features.js";
 import ErrorHandler from '../middleware/error.js';
 
@@ -45,9 +45,23 @@ export const getMyProfile = (req, res) => {
 };
 
 export const logout = (req, res) => {
-    res.clearCookie("token");
-    res.status(200).json({
+    res
+      .status(200)
+      .cookie("token", "", {
+        expires: new Date(Date.now()),
+        sameSite: process.env.NODE_ENV === "Develpoment" ? "lax" : "none",
+        secure: process.env.NODE_ENV === "Develpoment" ? false : true,
+      })
+      .json({
         success: true,
-        message: "Logged out successfully",
-    });
-};
+        user: req.user,
+      });
+  };
+
+// export const logout = (req, res) => {
+//     res.clearCookie("token");
+//     res.status(200).json({
+//         success: true,
+//         message: "Logged out successfully",
+//     });
+// };
