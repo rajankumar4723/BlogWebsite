@@ -5,7 +5,7 @@ import { isAuthenticated } from "../middleware/auth.js";
 const router = Router();
 router.post('/add', register);
 
-router.post("/me",isAuthenticated,getMyProfile);
+router.get("/me",isAuthenticated,getMyProfile);
 
 
 router.post("/login",login);
