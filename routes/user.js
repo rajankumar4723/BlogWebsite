@@ -3,14 +3,20 @@ import { getMyProfile, login, logout, register } from "../controllers/user.js";
 import { isAuthenticated } from "../middleware/auth.js";
 
 const router = Router();
-router.post('/add', register);
+router.route('/add').post(register);
 
-router.get("/me",isAuthenticated,getMyProfile);
+router.route('/me').get(isAuthenticated,getMyProfile);
 
 
-router.post("/login",login);
+// router.get("/me",isAuthenticated,getMyProfile);
+router.route('/login').post(login);
 
-router.get("/logout",logout);
+router.route('/logout').get(logout);
+
+
+// router.post("/login",login);
+
+// router.get("/logout",logout);
 
 // app.post('/all', (req, res) => {
 //     res.send("All is Working");

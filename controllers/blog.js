@@ -25,11 +25,11 @@ export const addblog = asyncHandler(async (req, res, next) => {
     const avatarLocalPath = req.files?.avatar[0]?.path;
     const coverImageLocalPath = req.files?.coverImage[0]?.path;
 
-    if (!avatarLocalPath) {
-        // throw new ApiError(400, "Avatar file is required")
-        return next(new ErrorHandler("Avatar file is required", 400));
+    // if (!avatarLocalPath) {
+    //     // throw new ApiError(400, "Avatar file is required")
+    //     return next(new ErrorHandler("Avatar file is required", 400));
 
-    }
+    // }
     const avatar = await uploadOnCloudinary(avatarLocalPath)
     const coverImage = await uploadOnCloudinary(coverImageLocalPath)
 
