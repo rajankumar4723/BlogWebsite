@@ -3,7 +3,7 @@ import { Blog } from "../models/blog.js";
 import { uploadOnCloudinary } from "../fileUploder/cloudinary.js";
 import ErrorHandler from "../middleware/error.js";
 
-export const addblog = asyncHandler(async (req, res, next) => {
+export const addblog = async (req, res, next) => {
     //title 
     //description
     // validation - not empty
@@ -22,24 +22,24 @@ export const addblog = asyncHandler(async (req, res, next) => {
         return next(new ErrorHandler("description is required", 400));
 
     }
-    // const avatarLocalPath = req.files?.avatar[0]?.path;
+    const avatarLocalPath = req.files?.avatar[0]?.path;
     const coverImageLocalPath = req.files?.coverImage[0]?.path;
 
-    // if (!avatarLocalPath) {
-    //     // throw new ApiError(400, "Avatar file is required")
-    //     return next(new ErrorHandler("Avatar file is required", 400));
+    if (!avatarLocalPath) {
+        // throw new ApiError(400, "Avatar file is required")
+        return next(new ErrorHandler("Avatar file is required", 400));
 
-    // }
-    // const avatar = await uploadOnCloudinary(avatarLocalPath)
+    }
+    const avatar = await uploadOnCloudinary(avatarLocalPath)
     const coverImage = await uploadOnCloudinary(coverImageLocalPath)
-    // !avatar || !
-    if (coverImage) {
+
+    if (!avatar || !coverImage) {
         return next(new ErrorHandler("Error uploading files to Cloudinary", 400));
 
     }
     const blog = await Blog.create({
         title,
-        // avatar: avatar.url,
+        avatar: avatar?.url,
         coverImage: coverImage?.url || "",
         description,
         user: req.user,
@@ -48,7 +48,7 @@ export const addblog = asyncHandler(async (req, res, next) => {
     const createdBlog = await blog.save();
     return res.status(201).json(new ErrorHandler(200, createdBlog, "Blog added successfully"));
 
-})
+}
 
 export const getMyAllPost = asyncHandler(async (req, res) => {
 
