@@ -14,10 +14,10 @@ const blogSchema = mongoose.Schema({
         trim: true,
 
     },
-    avatar: {
-        type: String,//Cloudinary Url
-        require:true,
-    },
+    // avatar: {
+    //     type: String,//Cloudinary Url
+    //     require:true,
+    // },
     coverImage: {
         type: String,//Cloudinary Url
         required: true,
