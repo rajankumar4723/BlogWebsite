@@ -26,12 +26,12 @@ app.use(
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(express.static("public"));
 
+app.use(errorMiddleware);
 // Import Routers
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/blogs', blogRouter);
 
 // Error Middleware
-app.use(errorMiddleware);
 
 app.get("/", (req, res) => {
     res.send("Nice working");
