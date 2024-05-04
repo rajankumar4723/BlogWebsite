@@ -10,10 +10,7 @@ router.route('/add').post(
             name:"avatar",
             maxCount:1
         },
-        {
-            name:"coverImage",
-            maxCount:1
-        }
+       
     ]),
      isAuthenticated,addblog);
 

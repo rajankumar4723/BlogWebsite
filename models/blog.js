@@ -18,11 +18,7 @@ const blogSchema = mongoose.Schema({
         type: String,//Cloudinary Url
         require:true,
     },
-    coverImage: {
-        type: String,//Cloudinary Url
-        required: true,
-
-    },
+    
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",                             //Collection name

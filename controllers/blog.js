@@ -1,5 +1,5 @@
 import { asyncHandler } from "../utils/asyncHandler.js"
-import { Blog } from "../models/blog.js";
+import { Blog } from "../Models/blog.js";
 import { uploadOnCloudinary } from "../fileUploder/cloudinary.js";
 import ErrorHandler from "../middleware/error.js";
 
@@ -23,7 +23,6 @@ export const addblog = async (req, res, next) => {
 
     }
     const avatarLocalPath = req.files?.avatar[0]?.path;
-    const coverImageLocalPath = req.files?.coverImage[0]?.path;
 
     if (!avatarLocalPath) {
         // throw new ApiError(400, "Avatar file is required")
@@ -31,16 +30,14 @@ export const addblog = async (req, res, next) => {
 
     }
     const avatar = await uploadOnCloudinary(avatarLocalPath)
-    const coverImage = await uploadOnCloudinary(coverImageLocalPath)
 
-    if (!avatar || !coverImage) {
+    if (!avatar) {
         return next(new ErrorHandler("Error uploading files to Cloudinary", 400));
 
     }
     const blog = await Blog.create({
         title,
         avatar: avatar?.url,
-        coverImage: coverImage?.url || "",
         description,
         user: req.user,
 
